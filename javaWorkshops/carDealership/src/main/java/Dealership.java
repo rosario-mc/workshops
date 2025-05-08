@@ -1,15 +1,21 @@
+import java.util.ArrayList;
 import java.util.List;
 
 public class Dealership {
     private String name;
     private String address;
     private String phoneNumber;
-    private List<Vehicle> vehicle;
+    private List<Vehicle> vehicles;
+
+    public Dealership() {
+        this.vehicles = new ArrayList<>();
+    }
 
     public Dealership(String name, String address, String phoneNumber) {
         this.name = name;
         this.address = address;
         this.phoneNumber = phoneNumber;
+        this.vehicles = new ArrayList<>();
     }
 
     public String getName() {
@@ -36,7 +42,15 @@ public class Dealership {
         this.phoneNumber = phoneNumber;
     }
 
-    public List<Vehicle> getVehicle() {
-        return vehicle;
+    public void addVehicle(Vehicle vehicle) {
+        vehicles.add(vehicle);
+    }
+
+    public boolean removeVehicle(String vin) {
+        return vehicles.removeIf(v -> v.getVin().equalsIgnoreCase(vin));
+    }
+
+    public List<Vehicle> getVehicles() {
+        return vehicles;
     }
 }

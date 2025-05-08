@@ -24,14 +24,6 @@ public class VehicleInventory {
         vehicles.add(new Vehicle("1FTFW1ET5EKE12541", 2020, "FORD", "F-150", "PICKUP", "WHITE", 1000, 69500));
     }
     public List<Vehicle> getVehicles() {
-        return vehicles; // returns a modifiable list
-    }
-
-    public void addVehicle(Vehicle vehicle) {
-        vehicles.add(vehicle);
-    }
-
-    public void removeVehicle(Vehicle vehicle) {
-        vehicles.remove(vehicle);
+        return vehicles;
     }
 }
