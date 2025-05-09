@@ -3,8 +3,10 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 public class DealershipFileManager {
+    static Scanner input = new Scanner(System.in);
 
     public void getDealership(){
 
@@ -22,6 +24,51 @@ public class DealershipFileManager {
             }
         }
         return lines;
+    }
+
+    public static void printVehicleListByFilter(String filename) {
+        try {
+            System.out.println("\nENTER FILTER BY:\n");
+            String filterBy = input.nextLine().trim().toUpperCase();
+            if (!filterBy.matches("[A-Z ]+")) {
+                System.out.println("\nFILTER BY MUST ONLY CONTAIN LETTERS AND SPACES.\n");
+                return;
+            }
+
+            List<String> lines = readAllLines(filename);
+            System.out.println("\n===========================================================\n FILTER BY " + filterBy + ":\n");
+
+            boolean found = false;
+            // Skip the header (line 0)
+            for (int i = 1; i < lines.size(); i++) {
+                String line = lines.get(i);
+                if (line.toUpperCase().contains(filterBy)) {
+                    String[] parts = line.split("\\|");
+                    if (parts.length >= 8) {
+                        String vin = parts[0].trim();
+                        int year = Integer.parseInt(parts[1].trim());
+                        String make = parts[2].trim();
+                        String model = parts[3].trim();
+                        String type = parts[4].trim();
+                        String color = parts[5].trim();
+                        int odometer = Integer.parseInt(parts[6].trim());
+                        double price = Double.parseDouble(parts[7].trim());
+
+                        Vehicle vehicle = new Vehicle(vin, year, make, model, type, color, odometer, price);
+                        System.out.println(vehicle);  // Calls your @Override toString
+                        found = true;
+                    }
+                }
+            }
+
+            if (!found) {
+                System.out.println("\nNO CARS MATCHING FILTER: " + filterBy + "\n");
+            }
+        } catch (IOException e) {
+            System.out.println("AN ERROR OCCURRED WHILE ACCESSING FILE: " + e.getMessage() + "\n");
+        } catch (NumberFormatException e) {
+            System.out.println("ERROR PARSING VEHICLE DATA: " + e.getMessage());
+        }
     }
 
     public static void printVehicleListByIndex(String filename, String header, int filterIndex, String filterValue) {
@@ -53,9 +100,37 @@ public class DealershipFileManager {
                 }
             }
         } catch (IOException e) {
-            System.out.println("An error occurred while accessing file: " + e.getMessage() + "\n");
+            System.out.println("AN ERROR OCCURRED WHILE ACCESSING FILE: " + e.getMessage() + "\n");
         } catch (NumberFormatException e) {
-            System.out.println("Error parsing number from file: " + e.getMessage());
+            System.out.println("ERROR PARSING VEHICLE DATA: " + e.getMessage());
         }
     }
+
+    /*
+    public static void printVehicleListInRange(String filename, String header, String start, String end) {
+        try {
+            System.out.println("=======================================================\n" + header + ":\n");
+            List<String> lines = readAllLines(filename);
+
+            for (int i = 1; i < lines.size(); i++) {
+                String line = lines.get(i);
+                String[] parts = line.split("\\|");
+
+                if (parts.length > 0) {
+                    String datePart = parts[0].trim();
+                    LocalDate transactionDate = LocalDate.parse(datePart, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+
+                    if ((transactionDate.isEqual(start) || transactionDate.isAfter(start)) &&
+                            (transactionDate.isEqual(end) || transactionDate.isBefore(end))) {
+                        System.out.println(line + "\n");
+                    }
+                }
+            }
+
+        } catch (IOException e) {
+            System.out.println("An Error Occurred While Accessing File: " + e.getMessage() + "\n");
+        }
+    }
+
+ */
 }

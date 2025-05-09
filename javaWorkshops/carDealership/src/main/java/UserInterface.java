@@ -8,30 +8,30 @@ public class UserInterface {
         boolean run = true;
         while (run) {
             String menu = """
-                            Welcome To [ADD YOUR DEALERSHIP NAME HERE]!
-                                    What Can We Do For You Today?
+                            WELCOME TO [ADD YOUR DEALERSHIP NAME HERE]!
+                                    WHAT CAN WE DO FOR YOU TODAY?
                     ===========================================================
-                    Please select one of the following options:
+                    PLEASE SELECT ONE OF THE FOLLOWING OPTIONS:
                     
-                    1 - Find vehicles within a price range
+                    1 - FIND VEHICLES WITHIN A PRICE RANGE
                     
-                    2 - Find vehicles by make / model
+                    2 - FIND VEHICLES BY MAKE / MODEL
                     
-                    3 - Find vehicles by year range
+                    3 - FIND VEHICLES BY YEAR RANGE
                     
-                    4 - Find vehicles by color
+                    4 - FIND VEHICLES BY COLOR
                     
-                    5 - Find vehicles by mileage range
+                    5 - FIND VEHICLES BY MILEAGE RANGE
                     
-                    6 - Find vehicles by type (car, truck, SUV, van)
+                    6 - FIND VEHICLES BY TYPE (CAR, TRUCK, SUV, VAN)
                     
-                    7 - List ALL vehicles
+                    7 - LIST ALL VEHICLES
                     
-                    8 - Add a vehicle
+                    8 - ADD A VEHICLE
                     
-                    9 - Remove a vehicle
+                    9 - REMOVE A VEHICLE
                     
-                    99 - Quit
+                    99 - QUIT
                     """;
             System.out.println(menu);
             String choice = input.nextLine().toUpperCase();
@@ -65,7 +65,7 @@ public class UserInterface {
                 case "9", "REMOVE A VEHICLE", "REMOVE":
                     break;
                 case "99", "QUIT", "EXIT", "BYE", "GOODBYE", "GOOD BYE":
-                    System.out.println("===========================================================\n\nThank you for working with [ADD YOUR DEALERSHIP NAME HERE]!\n\nHave a great day!");
+                    System.out.println("===========================================================\n\nTHANK YOU FOR WORKING WITH [ADD YOUR DEALERSHIP NAME HERE]!\n\nHAVE A GREAT DAY!");
                     run = false;
                     break;
             }

@@ -51,15 +51,15 @@ public class Dealership {
     }
 
     public static void getVehicleByMakeModel(String filename) {
-        DealershipFileManager.printVehicleListByIndex(filename, "\nFILTERED BY MAKE/MODEL", 2, "MAKE");
+        DealershipFileManager.printVehicleListByFilter(filename);
     }
 
     public static void getVehicleByType(String filename) {
-        DealershipFileManager.printVehicleListByIndex(filename, "\nFILTERED BY TYPE", 4, "TYPE");
+        DealershipFileManager.printVehicleListByFilter(filename);
     }
 
     public static void getVehicleByColor(String filename) {
-        DealershipFileManager.printVehicleListByIndex(filename, "\nFILTERED BY COLOR", 5, "COLOR");
+        DealershipFileManager.printVehicleListByFilter(filename);
     }
 
     public static void getVehicleByMileage(String filename) {
