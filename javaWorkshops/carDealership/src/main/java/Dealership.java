@@ -43,19 +43,15 @@ public class Dealership {
     }
 
     public static void getVehicleByPrice(String filename) {
-
-    }
-
-    public static void getVehicleByYear(String filename) {
-        DealershipFileManager.printVehicleListByIndex(filename, "\nFILTERED BY YEAR", 1, "YEAR");
+        DealershipFileManager.printVehicleListInRange(filename, 7);
     }
 
     public static void getVehicleByMakeModel(String filename) {
         DealershipFileManager.printVehicleListByFilter(filename);
     }
 
-    public static void getVehicleByType(String filename) {
-        DealershipFileManager.printVehicleListByFilter(filename);
+    public static void getVehicleByYear(String filename) {
+        DealershipFileManager.printVehicleListInRange(filename, 1);
     }
 
     public static void getVehicleByColor(String filename) {
@@ -63,7 +59,11 @@ public class Dealership {
     }
 
     public static void getVehicleByMileage(String filename) {
-        DealershipFileManager.printVehicleListByIndex(filename, "\nFILTERED BY MILEAGE", 6, "MILEAGE");
+        DealershipFileManager.printVehicleListInRange(filename, 6);
+    }
+
+    public static void getVehicleByType(String filename) {
+        DealershipFileManager.printVehicleListByFilter(filename);
     }
 
     public static void getAllVehicles(String filename) {
