@@ -39,20 +39,26 @@ public class UserInterface {
             switch (choice) {
                 case "1", "FIND VEHICLES WITHIN A PRICE RANGE", "VEHICLES WITHIN A PRICE RANGE", "WITHIN A PRICE RANGE",
                      "PRICE RANGE", "PRICE":
+                    Dealership.getVehicleByPrice("carDealership/src/main/resources/VehicleInventoryList.csv");
                     break;
                 case "2", "FIND VEHICLES BY MAKE/MODEL", "VEHICLES BY MAKE/MODEL", "MAKE/MODEL":
+                    Dealership.getVehicleByMakeModel("carDealership/src/main/resources/VehicleInventoryList.csv");
                     break;
                 case "3", "FIND VEHICLES BY YEAR RANGE", "VEHICLES BY YEAR RANGE", "YEAR RANGE":
+                    Dealership.getVehicleByYear("carDealership/src/main/resources/VehicleInventoryList.csv");
                     break;
                 case "4", "FIND VEHICLES BY COLOR", "VEHICLES BY COLOR", "COLOR":
+                    Dealership.getVehicleByColor("carDealership/src/main/resources/VehicleInventoryList.csv");
                     break;
                 case "5", "FIND VEHICLES BY MILAGE RANGE", "VEHICLES BY MILAGE RANGE", "MILAGE RANGE":
+                    Dealership.getVehicleByMileage("carDealership/src/main/resources/VehicleInventoryList.csv");
                     break;
                 case "6", "FIND VEHICLES BY TYPE (CAR, TRUCK, SUV, VAN)", "VEHICLES BY TYPE (CAR, TRUCK, SUV, VAN)",
                      "TYPE (CAR, TRUCK, SUV, VAN)", "TYPE":
+                    Dealership.getVehicleByType("carDealership/src/main/resources/VehicleInventoryList.csv");
                     break;
                 case "7", "LIST ALL VEHICLES", "ALL VEHICLES", "ALL":
-                    listAllVehicles();
+                    Dealership.getAllVehicles("carDealership/src/main/resources/VehicleInventoryList.csv");
                     break;
                 case "8", "ADD A VEHICLE", "ADD":
                     break;
@@ -63,13 +69,6 @@ public class UserInterface {
                     run = false;
                     break;
             }
-        }
-    }
-    private static void listAllVehicles() {
-        VehicleInventory inventory = new VehicleInventory();
-        List<Vehicle> vehicles = inventory.getVehicles();
-        for (Vehicle v : vehicles) {
-            System.out.println(v);
         }
     }
 }

@@ -42,6 +42,34 @@ public class Dealership {
         this.phoneNumber = phoneNumber;
     }
 
+    public static void getVehicleByPrice(String filename) {
+
+    }
+
+    public static void getVehicleByYear(String filename) {
+        DealershipFileManager.printVehicleListByIndex(filename, "\nFILTERED BY YEAR", 1, "YEAR");
+    }
+
+    public static void getVehicleByMakeModel(String filename) {
+        DealershipFileManager.printVehicleListByIndex(filename, "\nFILTERED BY MAKE/MODEL", 2, "MAKE");
+    }
+
+    public static void getVehicleByType(String filename) {
+        DealershipFileManager.printVehicleListByIndex(filename, "\nFILTERED BY TYPE", 4, "TYPE");
+    }
+
+    public static void getVehicleByColor(String filename) {
+        DealershipFileManager.printVehicleListByIndex(filename, "\nFILTERED BY COLOR", 5, "COLOR");
+    }
+
+    public static void getVehicleByMileage(String filename) {
+        DealershipFileManager.printVehicleListByIndex(filename, "\nFILTERED BY MILEAGE", 6, "MILEAGE");
+    }
+
+    public static void getAllVehicles(String filename) {
+        DealershipFileManager.printVehicleListByIndex(filename, "\nALL VEHICLES", -1, null);
+    }
+
     public void addVehicle(Vehicle vehicle) {
         vehicles.add(vehicle);
     }
@@ -50,7 +78,5 @@ public class Dealership {
         return vehicles.removeIf(v -> v.getVin().equalsIgnoreCase(vin));
     }
 
-    public List<Vehicle> getVehicles() {
-        return vehicles;
-    }
+
 }
