@@ -66,8 +66,8 @@ public class Dealership {
         DealershipFileManager.printVehicleListByFilter(filename);
     }
 
-    public static void getAllVehicles(String filename) {
-        DealershipFileManager.printVehicleListByIndex(filename, "\nALL VEHICLES", -1, null);
+    public List<Vehicle> getAllVehicles() {
+        return vehicles;
     }
 
     public void addVehicle(Vehicle vehicle) {

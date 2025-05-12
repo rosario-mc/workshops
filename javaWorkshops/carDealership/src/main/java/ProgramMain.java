@@ -1,5 +1,6 @@
 public class ProgramMain {
     public static void main(String[] args) {
-        UserInterface.displayMainMenu();
+        UserInterface ui = new UserInterface();
+        ui.displayMainMenu();
     }
 }

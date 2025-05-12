@@ -1,29 +1,58 @@
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
-import java.util.ArrayList;
+import java.io.*;
 import java.util.List;
 import java.util.Scanner;
 
 public class DealershipFileManager {
     static Scanner input = new Scanner(System.in);
 
-    public void getDealership(){
+    public static Dealership getDealership(String filename) throws IOException {
+        Dealership dealership = new Dealership(); // Create empty dealership
 
-    }
-    public void saveDealership(){
-
-    }
-
-    public static List<String> readAllLines(String filename) throws IOException {
-        List<String> lines = new ArrayList<>();
         try (BufferedReader reader = new BufferedReader(new FileReader(filename))) {
             String line;
             while ((line = reader.readLine()) != null) {
-                lines.add(line);
+                String[] parts = line.split("\\|");
+                if (parts.length >= 8) {
+                    String vin = parts[0].trim();
+                    int year = Integer.parseInt(parts[1].trim());
+                    String make = parts[2].trim();
+                    String model = parts[3].trim();
+                    String type = parts[4].trim();
+                    String color = parts[5].trim();
+                    int odometer = Integer.parseInt(parts[6].trim());
+                    double price = Double.parseDouble(parts[7].trim());
+
+                    Vehicle vehicle = new Vehicle(vin, year, make, model, type, color, odometer, price);
+                    dealership.addVehicle(vehicle);
+                }
             }
+        } catch (IOException | NumberFormatException e) {
+            System.out.println("ERROR READING VEHICLE DATA: " + e.getMessage());
         }
-        return lines;
+
+        return dealership;
+    }
+
+    public void appendVehicle(Vehicle vehicle, String filename) {
+        try (PrintWriter writer = new PrintWriter(new FileWriter(filename, true))) { // 'true' enables append mode
+            writer.printf("%s|%d|%s|%s|%s|%s|%d|%.2f%n",
+                    vehicle.getVin(), vehicle.getYear(), vehicle.getMake(), vehicle.getModel(),
+                    vehicle.getVehicleType(), vehicle.getColor(), vehicle.getOdometer(), vehicle.getPrice());
+        } catch (IOException e) {
+            System.out.println("FAILED TO APPEND VEHICLE: " + e.getMessage());
+        }
+    }
+
+    public void saveDealership(Dealership dealership, String filename) {
+        try (PrintWriter writer = new PrintWriter(new FileWriter(filename))) {
+            for (Vehicle v : dealership.getAllVehicles()) {
+                writer.printf("\n%s|%d|%s|%s|%s|%s|%d|%.2f%n",
+                        v.getVin(), v.getYear(), v.getMake(), v.getModel(),
+                        v.getVehicleType(), v.getColor(), v.getOdometer(), v.getPrice());
+            }
+        } catch (IOException e) {
+            System.out.println("FAILED TO SAVE DEALERSHIP: " + e.getMessage());
+        }
     }
 
     public static void printVehicleListByFilter(String filename) {
@@ -35,74 +64,23 @@ public class DealershipFileManager {
                 return;
             }
 
-            List<String> lines = readAllLines(filename);
+            Dealership dealership = getDealership(filename);
+            List<Vehicle> vehicles = dealership.getAllVehicles();
             System.out.println("\n===========================================================\n FILTER BY " + filterBy + ":\n");
 
             boolean found = false;
-
-            for (int i = 1; i < lines.size(); i++) {
-                String line = lines.get(i);
-                if (line.toUpperCase().contains(filterBy)) {
-                    String[] parts = line.split("\\|");
-                    if (parts.length >= 8) {
-                        String vin = parts[0].trim();
-                        int year = Integer.parseInt(parts[1].trim());
-                        String make = parts[2].trim();
-                        String model = parts[3].trim();
-                        String type = parts[4].trim();
-                        String color = parts[5].trim();
-                        int odometer = Integer.parseInt(parts[6].trim());
-                        double price = Double.parseDouble(parts[7].trim());
-
-                        Vehicle vehicle = new Vehicle(vin, year, make, model, type, color, odometer, price);
-                        System.out.println(vehicle);  // Calls your @Override toString
-                        found = true;
-                    }
+            for (Vehicle vehicle : vehicles) {
+                if (vehicle.toString().toUpperCase().contains(filterBy)) {
+                    System.out.println(vehicle);
+                    found = true;
                 }
             }
 
             if (!found) {
-                System.out.println("\nNO CARS MATCHING FILTER: " + filterBy + "\n");
+                System.out.println("\nNO VEHICLES MATCHING FILTER: " + filterBy + "\n");
             }
         } catch (IOException e) {
             System.out.println("AN ERROR OCCURRED WHILE ACCESSING FILE: " + e.getMessage() + "\n");
-        } catch (NumberFormatException e) {
-            System.out.println("ERROR PARSING VEHICLE DATA: " + e.getMessage());
-        }
-    }
-
-    public static void printVehicleListByIndex(String filename, String header, int filterIndex, String filterValue) {
-        try {
-            System.out.println("===========================================================\n" + header );
-            List<String> lines = readAllLines(filename);
-
-
-            for (int i = 1; i < lines.size(); i++) {
-                String line = lines.get(i);
-                String[] parts = line.split("\\|");
-
-                if (parts.length >= 8) {
-                    if (filterValue == null || parts[filterIndex].trim().equalsIgnoreCase(filterValue.trim())) {
-
-                        String vin = parts[0].trim();
-                        int year = Integer.parseInt(parts[1].trim());
-                        String make = parts[2].trim();
-                        String model = parts[3].trim();
-                        String type = parts[4].trim();
-                        String color = parts[5].trim();
-                        int odometer = Integer.parseInt(parts[6].trim());
-                        double price = Double.parseDouble(parts[7].trim());
-
-                        Vehicle vehicle = new Vehicle(vin, year, make, model, type, color, odometer, price);
-
-                        System.out.println(vehicle);
-                    }
-                }
-            }
-        } catch (IOException e) {
-            System.out.println("AN ERROR OCCURRED WHILE ACCESSING FILE: " + e.getMessage() + "\n");
-        } catch (NumberFormatException e) {
-            System.out.println("ERROR PARSING VEHICLE DATA: " + e.getMessage());
         }
     }
 
@@ -115,29 +93,20 @@ public class DealershipFileManager {
 
         try {
             System.out.println("=======================================================\nFILTER BY RANGE:\n");
-            List<String> lines = readAllLines(filename);
 
-            for (int i = 1; i < lines.size(); i++) {
-                String line = lines.get(i);
-                String[] parts = line.split("\\|");
+            Dealership dealership = getDealership(filename);
+            List<Vehicle> vehicles = dealership.getAllVehicles();
 
-                if (parts.length > filterIndex) {
-                    int value = Integer.parseInt(parts[filterIndex].trim());
+            for (Vehicle vehicle : vehicles) {
+                int value = switch (filterIndex) {
+                    case 1 -> vehicle.getYear();
+                    case 6 -> vehicle.getOdometer();
+                    case 7 -> (int) vehicle.getPrice();
+                    default -> -1; // Invalid index
+                };
 
-                    if (value >= startRange && value <= endRange) {
-                        String vin = parts[0].trim();
-                        int year = Integer.parseInt(parts[1].trim());
-                        String make = parts[2].trim();
-                        String model = parts[3].trim();
-                        String type = parts[4].trim();
-                        String color = parts[5].trim();
-                        int odometer = Integer.parseInt(parts[6].trim());
-                        double price = Double.parseDouble(parts[7].trim());
-
-                        Vehicle vehicle = new Vehicle(vin, year, make, model, type, color, odometer, price);
-
-                        System.out.println(vehicle);
-                    }
+                if (value >= startRange && value <= endRange) {
+                    System.out.println(vehicle);
                 }
             }
 
