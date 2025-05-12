@@ -34,7 +34,7 @@ public class DealershipFileManager {
     }
 
     public void appendVehicle(Vehicle vehicle, String filename) {
-        try (PrintWriter writer = new PrintWriter(new FileWriter(filename, true))) { // 'true' enables append mode
+        try (PrintWriter writer = new PrintWriter(new FileWriter(filename, true))) {
             writer.printf("%s|%d|%s|%s|%s|%s|%d|%.2f%n",
                     vehicle.getVin(), vehicle.getYear(), vehicle.getMake(), vehicle.getModel(),
                     vehicle.getVehicleType(), vehicle.getColor(), vehicle.getOdometer(), vehicle.getPrice());
