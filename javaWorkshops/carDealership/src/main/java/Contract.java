@@ -1,11 +1,13 @@
+import java.time.LocalDate;
+
+
 public abstract class Contract {
-    protected String dateOfContract;
+    protected String dateOfContract = LocalDate.now().toString();
     protected String customerName;
     protected String customerEmail;
     protected Vehicle vehicleSold;
 
-    public Contract(String dateOrContract, String customerName, String customerEmail, Vehicle vehicleSold) {
-        this.dateOfContract = dateOrContract;
+    public Contract(String customerName, String customerEmail, Vehicle vehicleSold) {
         this.customerName = customerName;
         this.customerEmail = customerEmail;
         this.vehicleSold = vehicleSold;

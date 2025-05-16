@@ -1,4 +1,5 @@
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Scanner;
 
@@ -8,13 +9,12 @@ public class UserInterface {
 
     public void displayMainMenu() {
         boolean run = true;
-        UserInterface ui = new UserInterface();
-        ui.init();
+        init();
 
         while (run) {
             String menu = """
-                        WELCOME TO [ADD YOUR DEALERSHIP NAME HERE]!
-                                WHAT CAN WE DO FOR YOU TODAY?
+                                      WELCOME!
+                               WHAT CAN WE DO FOR YOU TODAY?
                 ===========================================================
                 PLEASE SELECT ONE OF THE FOLLOWING OPTIONS:
                 
@@ -27,6 +27,7 @@ public class UserInterface {
                 7 - LIST ALL VEHICLES
                 8 - ADD A VEHICLE
                 9 - REMOVE A VEHICLE
+                10- SELL/LEASE A VEHICLE
                 99 - QUIT
                 """;
             System.out.println(menu);
@@ -51,17 +52,20 @@ public class UserInterface {
                 case "6", "TYPE":
                     Dealership.getVehicleByType("carDealership/src/main/resources/VehicleInventoryList.csv");
                     break;
-                case "7":
+                case "7", "LIST ALL":
                    processAllVehiclesRequest();
                     break;
-                case "8":
+                case "8", "ADD":
                     addVehicle();
                     break;
-                case "9":
+                case "9", "REMOVE":
                     removeVehicle();
                     break;
+                case "10", "SELL", "LEASE":
+                    sellLeaseVehicle();
+                    break;
                 case "99", "QUIT":
-                    System.out.println("THANK YOU FOR WORKING WITH [ADD YOUR DEALERSHIP NAME HERE]!");
+                    System.out.println("THANK YOU!\nHAVE A GREAT DAY:)\nclosing program....");
                     run = false;
                     break;
                 default:
@@ -85,21 +89,21 @@ public class UserInterface {
         System.out.print("ENTER MODEL: ");
         String model = input.nextLine().trim();
 
-        System.out.print("ENTER TYPE (E.G., CAR, TRUCK, SUV): ");
+        System.out.print("ENTER TYPE (e.g., CAR, TRUCK, SUV): ");
         String type = input.nextLine().trim();
 
         System.out.print("ENTER COLOR: ");
         String color = input.nextLine().trim();
 
-        System.out.print("ENTER ODOMETER READING: ");
+        System.out.print("ENTER ODOMETER: ");
         int odometer = Integer.parseInt(input.nextLine().trim());
 
         System.out.print("ENTER PRICE: ");
         double price = Double.parseDouble(input.nextLine().trim());
 
         Vehicle newVehicle = new Vehicle(vin, year, make, model, type, color, odometer, price);
-        dealership.addVehicle(newVehicle);
 
+        dealership.addVehicle(newVehicle);
         DealershipFileManager dfm = new DealershipFileManager();
         dfm.appendVehicle(newVehicle, "carDealership/src/main/resources/VehicleInventoryList.csv");
 
@@ -123,6 +127,54 @@ public class UserInterface {
         } else {
             System.out.println("Vehicle with VIN '" + vin + "' not found.\n");
         }
+    }
+
+    private void sellLeaseVehicle(){
+        System.out.print("ENTER VIN OF VEHICLE TO SELL OR LEASE: ");
+        String vin = input.nextLine().trim();
+
+        Vehicle vehicle = dealership.getVehicleByVin(vin);
+        if (vehicle == null) {
+            System.out.println("VEHICLE NOT FOUND.");
+            return;
+        }
+
+        System.out.print("ENTER CUSTOMER NAME: ");
+        String customerName = input.nextLine().trim();
+
+        System.out.print("ENTER CUSTOMER EMAIL: ");
+        String customerEmail = input.nextLine().trim();
+
+        System.out.print("IS THIS A SALE OR LEASE? ");
+        String type = input.nextLine().trim().toLowerCase();
+
+        Contract contract;
+
+        if (type.equals("sale")) {
+            System.out.print("WILL THE CUSTOMER FINANCE? (YES/NO): ");
+            boolean finance = input.nextLine().trim().equalsIgnoreCase("yes");
+            contract = new SalesContract(customerName, customerEmail, vehicle, finance);
+        } else if (type.equals("lease")) {
+            if (vehicle.getYear() < LocalDate.now().getYear() - 3) {
+                System.out.println("THIS VEHICLE IS TOO OLD TO LEASE.");
+                return;
+            }
+            contract = new LeaseContract(customerName, customerEmail, vehicle);
+        } else {
+            System.out.println("INVALID CONTRACT TYPE.");
+            return;
+        }
+
+        // Save contract
+        ContractDataManager cdm = new ContractDataManager();
+        cdm.saveContract(contract);
+
+        // Remove vehicle from inventory
+        dealership.removeVehicle(vin);
+        DealershipFileManager dfm = new DealershipFileManager();
+        dfm.saveDealership(dealership, "carDealership/src/main/resources/VehicleInventoryList.csv");
+
+        System.out.println("Contract saved and vehicle removed from inventory.");
     }
 
     private void init() {

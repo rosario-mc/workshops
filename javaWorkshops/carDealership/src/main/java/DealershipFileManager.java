@@ -9,6 +9,7 @@ public class DealershipFileManager {
         Dealership dealership = new Dealership(); // Create empty dealership
 
         try (BufferedReader reader = new BufferedReader(new FileReader(filename))) {
+            String header = reader.readLine();
             String line;
             while ((line = reader.readLine()) != null) {
                 String[] parts = line.split("\\|");
@@ -45,8 +46,12 @@ public class DealershipFileManager {
 
     public void saveDealership(Dealership dealership, String filename) {
         try (PrintWriter writer = new PrintWriter(new FileWriter(filename))) {
+
+            writer.println("VIN|YEAR|MAKE|MODEL|TYPE|COLOR|MILEAGE|PRICE");
+
+
             for (Vehicle v : dealership.getAllVehicles()) {
-                writer.printf("\n%s|%d|%s|%s|%s|%s|%d|%.2f%n",
+                writer.printf("%s|%d|%s|%s|%s|%s|%d|%.2f%n",
                         v.getVin(), v.getYear(), v.getMake(), v.getModel(),
                         v.getVehicleType(), v.getColor(), v.getOdometer(), v.getPrice());
             }

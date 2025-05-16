@@ -66,6 +66,15 @@ public class Dealership {
         DealershipFileManager.printVehicleListByFilter(filename);
     }
 
+    public Vehicle getVehicleByVin(String vin) {
+        for (Vehicle vehicle : vehicles) {
+            if (vehicle.getVin().equalsIgnoreCase(vin)) {
+                return vehicle;
+            }
+        }
+        return null; // if not found
+    }
+
     public List<Vehicle> getAllVehicles() {
         return vehicles;
     }

@@ -2,8 +2,8 @@ public class LeaseContract extends Contract {
     private final double expectedEndingValueRate = 0.5;
     private final double leaseFee = 0.07;
 
-    public LeaseContract(String dateOrContract, String customerName, String customerEmail, Vehicle vehicleSold) {
-        super(dateOrContract, customerName, customerEmail, vehicleSold);
+    public LeaseContract(String customerName, String customerEmail, Vehicle vehicleSold) {
+        super(customerName, customerEmail, vehicleSold);
     }
 
     public double getExpectedEndingValueRate() {
