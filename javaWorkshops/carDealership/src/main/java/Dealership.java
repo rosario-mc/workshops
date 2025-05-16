@@ -86,6 +86,4 @@ public class Dealership {
     public boolean removeVehicle(String vin) {
         return vehicles.removeIf(v -> v.getVin().equalsIgnoreCase(vin));
     }
-
-
 }

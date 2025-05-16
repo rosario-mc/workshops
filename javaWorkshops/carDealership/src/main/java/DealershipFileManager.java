@@ -46,14 +46,12 @@ public class DealershipFileManager {
 
     public void saveDealership(Dealership dealership, String filename) {
         try (PrintWriter writer = new PrintWriter(new FileWriter(filename))) {
-
-            writer.println("VIN|YEAR|MAKE|MODEL|TYPE|COLOR|MILEAGE|PRICE");
-
+            writer.println("WELCOME TO DEALERSHIP!");
 
             for (Vehicle v : dealership.getAllVehicles()) {
-                writer.printf("%s|%d|%s|%s|%s|%s|%d|%.2f%n",
+                writer.println(String.format("%s|%d|%s|%s|%s|%s|%d|%.2f",
                         v.getVin(), v.getYear(), v.getMake(), v.getModel(),
-                        v.getVehicleType(), v.getColor(), v.getOdometer(), v.getPrice());
+                        v.getVehicleType(), v.getColor(), v.getOdometer(), v.getPrice()));
             }
         } catch (IOException e) {
             System.out.println("FAILED TO SAVE DEALERSHIP: " + e.getMessage());
