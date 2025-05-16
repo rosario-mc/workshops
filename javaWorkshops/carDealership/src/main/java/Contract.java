@@ -2,9 +2,9 @@ public abstract class Contract {
     protected String dateOfContract;
     protected String customerName;
     protected String customerEmail;
-    protected String vehicleSold;
+    protected Vehicle vehicleSold;
 
-    public Contract(String dateOrContract, String customerName, String customerEmail, String vehicleSold) {
+    public Contract(String dateOrContract, String customerName, String customerEmail, Vehicle vehicleSold) {
         this.dateOfContract = dateOrContract;
         this.customerName = customerName;
         this.customerEmail = customerEmail;
@@ -19,11 +19,11 @@ public abstract class Contract {
         this.dateOfContract = dateOfContract;
     }
 
-    public String getVehicleSold() {
+    public Vehicle getVehicleSold() {
         return vehicleSold;
     }
 
-    public void setVehicleSold(String vehicleSold) {
+    public void setVehicleSold(Vehicle vehicleSold) {
         this.vehicleSold = vehicleSold;
     }
 
